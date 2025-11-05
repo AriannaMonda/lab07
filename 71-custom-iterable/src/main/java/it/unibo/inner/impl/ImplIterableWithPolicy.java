@@ -23,19 +23,20 @@ public class ImplIterableWithPolicy<T> implements IterableWithPolicy<T>{
             }
         });
     }
+    
+    /*
+     * Implement the `setIterationPolicy` method so that it sets the `Predicate<T>` 
+     * that will be used to filter the elements during the iteration.
+     */
+    public void setIterationPolicy(Predicate<T> filter){
+        this.filter = filter;
+    }
     /*
      * Add a new constructor to the newly created class that takes two arguments: an array of `T` 
      * elements and a `Predicate<T>` that will be used to filter the elements during the iteration.
      */
     public ImplIterableWithPolicy(T[] elements, Predicate<T> filter) {
         this.elements = List.of(elements);
-    }
-
-    /*
-     * Implement the `setIterationPolicy` method so that it sets the `Predicate<T>` 
-     * that will be used to filter the elements during the iteration.
-     */
-    public void setIterationPolicy(Predicate<T> filter){
         this.filter = filter;
     }
     //inner class: classe innestata -> T lo eredita dal tipo per cui è stata definita la classe outer
@@ -47,8 +48,11 @@ public class ImplIterableWithPolicy<T> implements IterableWithPolicy<T>{
         }
 
         public boolean hasNext() {
-            if(elements.size()> this.curr){
-                return true;
+            while(elements.size() > this.curr){
+                if(filter.test(elements.get(curr))){
+                    return true;
+                }
+                curr++;
             }
             return false;
         }
@@ -64,6 +68,5 @@ public class ImplIterableWithPolicy<T> implements IterableWithPolicy<T>{
 
     public Iterator<T> iterator(){
         return new ImplIterator();
-    }
-
+    }    
 }
