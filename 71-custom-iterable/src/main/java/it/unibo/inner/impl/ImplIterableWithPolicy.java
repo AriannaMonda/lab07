@@ -10,13 +10,33 @@ import it.unibo.inner.api.Predicate;
 
 public class ImplIterableWithPolicy<T> implements IterableWithPolicy<T>{
     private List<T> elements = new ArrayList<>(); 
-        
+    private Predicate<T> filter;
+    /* Parte 1
     public ImplIterableWithPolicy(T[] elements) {
             this.elements = List.of(elements);
     }
+    */
+    public ImplIterableWithPolicy(T[] elements){
+        this(elements, new Predicate<T>() {
+            public boolean test(T elem){
+                return true;
+            }
+        });
+    }
+    /*
+     * Add a new constructor to the newly created class that takes two arguments: an array of `T` 
+     * elements and a `Predicate<T>` that will be used to filter the elements during the iteration.
+     */
+    public ImplIterableWithPolicy(T[] elements, Predicate<T> filter) {
+        this.elements = List.of(elements);
+    }
 
+    /*
+     * Implement the `setIterationPolicy` method so that it sets the `Predicate<T>` 
+     * that will be used to filter the elements during the iteration.
+     */
     public void setIterationPolicy(Predicate<T> filter){
-        //empty for now 
+        this.filter = filter;
     }
     //inner class: classe innestata -> T lo eredita dal tipo per cui è stata definita la classe outer
     public class ImplIterator implements Iterator<T>{ 
@@ -45,5 +65,5 @@ public class ImplIterableWithPolicy<T> implements IterableWithPolicy<T>{
     public Iterator<T> iterator(){
         return new ImplIterator();
     }
-    
+
 }
