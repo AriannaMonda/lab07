@@ -54,7 +54,21 @@ public final class Transformers {
      * @return A transformed list where each input element is replaced with the produced elements
      */
     public static <I, O> List<O> transform(final Iterable<I> base, final Function<I, O> transformer) {
-        return null;
+        /* //metodo che dovrebbe andare bene ma duplica il codice sopra
+        * final var result = new ArrayList<O>();
+        * for (final I input : Objects.requireNonNull(base, "The base iterable cannot be null")){
+        *   result.add(transformer.call(input));
+        }
+        return result;
+        */ 
+        //classe anonima, implemento questo  metodo solo per questo caso specifico, poi finita la funzione rimane li
+        return flattenTransform(base, new Function<I, Collection<O>>() {
+            public Collection<O> call(I input) {
+                O result = transformer.call(input);
+                Collection<O> listaConUnElemento = List.of(result);
+                return listaConUnElemento;
+            }
+        });
     }
 
     /**
