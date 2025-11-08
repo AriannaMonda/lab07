@@ -6,6 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -17,6 +20,7 @@ class TestStrictBankAccount {
     private AccountHolder mRossi;
     private BankAccount bankAccount;
     private static final int AMOUNT = 100;
+    private static final int ACCEPTABLE_MESSAGE_LENGTH = 10;
 
     /**
      * Prepare the tests.
@@ -54,10 +58,12 @@ class TestStrictBankAccount {
     @Test
     public void testNegativeWithdraw() {
         try{
-            bankAccount.withdraw(mRossi.getUserID(), -50);
+            bankAccount.withdraw(mRossi.getUserID(), -AMOUNT);
             fail("Expected exception to be thrown");
-        } catch (IllegalArgumentException e){
-            // Test passes
+        } catch (final IllegalArgumentException e){
+            assertNotNull(e.getMessage()); // Non-null message
+            assertFalse(e.getMessage().isBlank()); // Not a blank or empty message
+            assertTrue(e.getMessage().length() >= ACCEPTABLE_MESSAGE_LENGTH); // A message with a decent length
         }
     }
 
@@ -66,12 +72,14 @@ class TestStrictBankAccount {
      */
     @Test
     public void testWithdrawingTooMuch() {
-        bankAccount.deposit(mRossi.getUserID(), AMOUNT);
         try{
-            bankAccount.withdraw(mRossi.getUserID(), AMOUNT + 50);
-            fail("Expected exception to be thrown");
-        } catch (IllegalArgumentException e){
-            // Test passes
+            bankAccount.withdraw(mRossi.getUserID(), bankAccount.getBalance() * 2);
+            fail("Withdrawing more money than it is in the account was possible, but should have thrown an exception");
+        } catch (final IllegalArgumentException e){
+            assertNotNull(e.getMessage()); // Non-null message
+            assertFalse(e.getMessage().isBlank()); // Not a blank or empty message
+            assertTrue(e.getMessage().length() >= ACCEPTABLE_MESSAGE_LENGTH); // A message with a decent length
+
         }
     }
 }
