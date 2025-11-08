@@ -2,10 +2,10 @@ package it.unibo.nestedenum;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Locale;
-import java.util.Objects;
+//import java.util.Locale;
+//import java.util.Objects;
 import java.util.List;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 /**
  * Implementation of {@link MonthSorter}.
@@ -40,7 +40,7 @@ public final class MonthSorterNested implements MonthSorter {
             return this.days;
         }
         
-        public Month fromString(String input){
+        public static Month fromString(String input){
             if (input == null) {
                 throw new NullPointerException();
             }
@@ -59,32 +59,32 @@ public final class MonthSorterNested implements MonthSorter {
             throw new IllegalArgumentException("Argument not valid");
         }
     }
-/*
- * comparatore che ordina delle stringhe
- * (interpretandole come mesi) in base al loro ordine nell'anno
- */    
-    @Override
-    public Comparator<String> sortByDays() {
-        return null;
-    }
-/*
- * comparatore che le ordina invece in base al numero
- * di giorni che il mese ha.
- */
-    @Override
-    public Comparator<String> sortByOrder() {
-        return null;
-    }
-
     static class SortByDate implements Comparator<String>{
-        public int compare(String m1, String m2){
-            Month.valueOf(m1).getDays();
-             Month.valueOf(m2).getDays();
+        public int compare(final String m1, final String m2){
+            return Integer.compare(Month.fromString(m1).getDays(), Month.fromString(m2).getDays());
         } 
     }
     
     static class SortByMonthOrder implements Comparator<String>{
-
+        public int compare(final String m1, final String m2){
+            return Month.fromString(m1).compareTo(Month.fromString(m2));
+        } 
     }
+    /*
+    * comparatore che ordina delle stringhe
+    * (interpretandole come mesi) in base al loro ordine nell'anno
+    */    
+    @Override
+    public Comparator<String> sortByDays() {
+        return new SortByDate();
+    }
+    /*
+    * comparatore che le ordina invece in base al numero
+    * di giorni che il mese ha.
+    */
+    @Override
+    public Comparator<String> sortByOrder() {
+        return new SortByMonthOrder();
+}
 }
 

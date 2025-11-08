@@ -63,7 +63,7 @@ public final class Transformers {
         */ 
         //classe anonima, implemento questo  metodo solo per questo caso specifico, poi finita la funzione rimane li
         return flattenTransform(base, new Function<I, Collection<O>>() {
-            public Collection<O> call(I input) {
+            public Collection<O> call(final I input) {
                 O result = transformer.call(input);
                 Collection<O> listaConUnElemento = List.of(result);
                 return listaConUnElemento;
@@ -102,7 +102,7 @@ public final class Transformers {
      */
     public static <I> List<I> select(final Iterable<I> base, final Function<I, Boolean> test) {
         return flattenTransform(base, new Function<I,Collection<? extends I>>(){
-            public Collection<I> call(I input) {
+            public Collection<I> call(final I input) {
                 Collection<I> result = new ArrayList<>();
                 if(test.call(input)){
                     result.add(input);
@@ -126,7 +126,7 @@ public final class Transformers {
      */
     public static <I> List<I> reject(final Iterable<I> base, final Function<I, Boolean> test) {
         return select(base, new Function<I,Boolean>() {
-            public Boolean call(I input){
+            public Boolean call(final I input){
                 return !test.call(input);
             }
         }); 

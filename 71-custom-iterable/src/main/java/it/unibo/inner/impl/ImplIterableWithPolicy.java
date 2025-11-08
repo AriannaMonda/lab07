@@ -48,7 +48,7 @@ public class ImplIterableWithPolicy<T> implements IterableWithPolicy<T>{
 
         @Override
         public boolean hasNext() {
-            while(elements.size() > this.curr){
+            while(elements.size() > curr){
                 if(filter.test(elements.get(curr))){
                     return true;
                 }
