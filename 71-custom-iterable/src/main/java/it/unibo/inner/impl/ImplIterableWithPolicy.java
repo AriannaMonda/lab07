@@ -16,26 +16,25 @@ public class ImplIterableWithPolicy<T> implements IterableWithPolicy<T>{
             this.elements = List.of(elements);
     }
     */
-    public ImplIterableWithPolicy(T[] elements){
+    public ImplIterableWithPolicy(final T[] elements){
         this(elements, new Predicate<T>() {
             public boolean test(T elem){
                 return true;
             }
         });
     }
-    
     /*
      * Implement the `setIterationPolicy` method so that it sets the `Predicate<T>` 
      * that will be used to filter the elements during the iteration.
      */
-    public void setIterationPolicy(Predicate<T> filter){
+    public void setIterationPolicy(final Predicate<T> filter){
         this.filter = filter;
     }
     /*
      * Add a new constructor to the newly created class that takes two arguments: an array of `T` 
      * elements and a `Predicate<T>` that will be used to filter the elements during the iteration.
      */
-    public ImplIterableWithPolicy(T[] elements, Predicate<T> filter) {
+    public ImplIterableWithPolicy(final T[] elements, final Predicate<T> filter) {
         this.elements = List.of(elements);
         this.filter = filter;
     }
@@ -47,6 +46,7 @@ public class ImplIterableWithPolicy<T> implements IterableWithPolicy<T>{
             this.curr = 0;
         }
 
+        @Override
         public boolean hasNext() {
             while(elements.size() > this.curr){
                 if(filter.test(elements.get(curr))){
@@ -57,6 +57,7 @@ public class ImplIterableWithPolicy<T> implements IterableWithPolicy<T>{
             return false;
         }
 
+        @Override
         public T next() {
             if(hasNext()){
                 return elements.get(curr++);

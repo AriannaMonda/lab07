@@ -59,15 +59,32 @@ public final class MonthSorterNested implements MonthSorter {
             throw new IllegalArgumentException("Argument not valid");
         }
     }
-    
+/*
+ * comparatore che ordina delle stringhe
+ * (interpretandole come mesi) in base al loro ordine nell'anno
+ */    
     @Override
     public Comparator<String> sortByDays() {
         return null;
     }
-
+/*
+ * comparatore che le ordina invece in base al numero
+ * di giorni che il mese ha.
+ */
     @Override
     public Comparator<String> sortByOrder() {
         return null;
+    }
+
+    static class SortByDate implements Comparator<String>{
+        public int compare(String m1, String m2){
+            Month.valueOf(m1).getDays();
+             Month.valueOf(m2).getDays();
+        } 
+    }
+    
+    static class SortByMonthOrder implements Comparator<String>{
+
     }
 }
 
